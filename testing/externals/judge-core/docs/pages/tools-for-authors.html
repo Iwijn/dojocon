@@ -1,0 +1,221 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>Tools for testplan authors | @ftrprf/judge-core</title><meta name="description" content="Documentation for @ftrprf/judge-core"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script async src="../assets/search.js" id="search-script"></script><link rel="stylesheet" href="../assets/pages.css"/></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container">
+<div class="table-cell" id="tsd-search" data-base="..">
+<div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
+<div class="field">
+<div id="tsd-toolbar-links"></div></div>
+<ul class="results">
+<li class="state loading">Preparing search index...</li>
+<li class="state failure">The search index is not available</li></ul><a href="../index.html" class="title">@ftrprf/judge-core</a></div>
+<div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="7" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="11" width="14" height="2" fill="var(--color-text)"></rect></svg></a></div></div></header>
+<div class="container container-main">
+<div class="col-8 col-content">
+<div class="tsd-page-title">
+<ul class="tsd-breadcrumb">
+<li><a href="../modules.html">@ftrprf/judge-core</a></li>
+<li><span>Guides</span></li>
+<li><a href="tools-for-authors.html">Tools for testplan authors</a></li></ul>
+<h1> Tools for testplan authors</h1></div>
+<div class="tsd-panel tsd-typography"><p>This document contains practical information for people writing testplans.
+It does not explain what to write in the testplans themselves; see the document <a href="./introduction-to-testing.md"><em>Introduction to testing</em></a> for that.</p>
+
+<a href="#what-to-test" id="what-to-test" style="color: inherit; text-decoration: none;">
+  <h2>What to test</h2>
+</a>
+<p>Before or when writing a testplan, you should know what you want to test.
+In most cases, an exercise is part of a lesson with some goals.
+The tests will therefore depend on the goal of the lesson (and, of course, on the problem statement).
+At FTRPRF, in most cases, you&#39;ll get that information from the content team.</p>
+
+<a href="#running-the-judge-locally" id="running-the-judge-locally" style="color: inherit; text-decoration: none;">
+  <h2>Running the judge locally</h2>
+</a>
+<p>You should be able to run the Scratch judge locally.
+The most up-to-date information on this can probably be found in the readme of the Judge&#39;s repository.</p>
+<p>First, you&#39;ll need to clone the Scratch judge&#39;s git repository.
+It uses <em>npm</em> workspaces, so you need a recent version of npm (&gt; 7.7):</p>
+<ul>
+<li><code>node</code> 15+</li>
+<li><code>npm</code> 7.7+</li>
+</ul>
+<p>If you use <code>nvm</code>, you can simply execute <code>nvm use</code> to get the desired <code>node</code> and <code>npm</code> version.</p>
+<p>To run the judge, you need to:</p>
+<ol>
+<li>Execute <code>npm run build</code> to compile the judge.
+You must repeat this each time you change code in the judge.</li>
+<li>Open <code>packages/runner/src/environment/page.html</code> in your browser.
+This will load and execute a project based on the <code>config.json</code> file.
+This <code>config.json</code> file is obtained by copying the <code>config.example.json</code> file (in the root of the repo) and changing its name.</li>
+</ol>
+
+<a href="#config-file" id="config-file" style="color: inherit; text-decoration: none;">
+  <h3>Config file</h3>
+</a>
+<p>The <code>config.json</code> file is used to determine what project should be judged.
+An example can be found in <code>config.example.json</code>:</p>
+<pre><code class="language-json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;template&quot;</span><span class="hl-1">: </span><span class="hl-4">&quot;tests/projects/status/01.space_mission.sb3&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;submission&quot;</span><span class="hl-1">: </span><span class="hl-4">&quot;tests/projects/status/01.space_mission.sb3&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;testplan&quot;</span><span class="hl-1">: </span><span class="hl-4">&quot;plans/status/01.space_mission_test.js&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;debug&quot;</span><span class="hl-1">: </span><span class="hl-5">false</span><br/><span class="hl-1">}</span>
+</code></pre>
+
+<a href="#getting-scratch-projects-locally" id="getting-scratch-projects-locally" style="color: inherit; text-decoration: none;">
+  <h3>Getting Scratch projects locally</h3>
+</a>
+<p>To execute the judge, you also need the Scratch projects of the exercise you want to test.
+Instead of downloading all <code>sb3</code> files manually from the Studio, the judge provides a useful script to do just that.
+The most useful commands are:</p>
+<ul>
+<li><code>npm run ipm --workspace packages/ipm -- down ../../exercises/[exercise]</code> for a single exercise</li>
+<li><code>npm run ipm --workspace packages/ipm -- sync</code> for all exercises</li>
+</ul>
+<p>When executing these commands, you need to authenticate to the FTRPRF Studio.
+To do so, you need to set the following environment variables:</p>
+<ul>
+<li><code>USERNAME</code> to your username</li>
+<li><code>PASSWORD</code> to your password</li>
+</ul>
+<p>The first time you probably want to execute the first command (<code>sync</code>),
+as it will download all <code>sb3</code> files for all exercises in the repository.
+Afterwards, you can use the <code>down</code> command to download the files for a single exercise (as downloading all files can take a while).</p>
+<p>Now you can change your <code>config.json</code> file to point to an actual exercise.</p>
+
+<a href="#preparing-a-new-exercise" id="preparing-a-new-exercise" style="color: inherit; text-decoration: none;">
+  <h2>Preparing a new exercise</h2>
+</a>
+<p>You should do the following steps when adding a new exercise:</p>
+<ol>
+<li><p>Create a new folder in <code>exercises</code>, say <code>exercise-a</code>.</p>
+</li>
+<li><p>Add a <code>package.json</code> file to the folder.
+This will make the exercise an npm project.
+Don&#39;t forget to add the judge-specific information in the <code>package.json</code>:</p>
+<pre><code class="language-json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;itch&quot;</span><span class="hl-1">: [</span><br/><span class="hl-1">    {</span><br/><span class="hl-1">      </span><span class="hl-10">&quot;id&quot;</span><span class="hl-1">: </span><span class="hl-6">232557</span><br/><span class="hl-1">    }</span><br/><span class="hl-1">  ]</span><br/><span class="hl-1">}</span>
+</code></pre>
+<p>See existing exercises for more examples.</p>
+</li>
+<li><p>Execute <code>npm install</code> in the root of the repository.</p>
+</li>
+<li><p>Execute <code>npm run ipm --workspace packages/ipm -- down ../../exercises/exercise-a</code> to get the <code>sb3</code> files for the new exercise.</p>
+</li>
+<li><p>Create a <code>plan.js</code> file in the exercise directory.
+This will be the testplan.</p>
+</li>
+<li><p>Write the testplan.</p>
+</li>
+<li><p>Adjust the <code>config.json</code> file to point the new exercise:</p>
+<pre><code class="language-json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;template&quot;</span><span class="hl-1">: </span><span class="hl-4">&quot;../../../../exercises/exercise-a/projects/Starter-NL.sb3&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;submission&quot;</span><span class="hl-1">: </span><span class="hl-4">&quot;../../../../exercises/exercise-a/projects/Oplossing-NL.sb3&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;testplan&quot;</span><span class="hl-1">: </span><span class="hl-4">&quot;../../../../exercises/exercise-a/plan.js&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;debug&quot;</span><span class="hl-1">: </span><span class="hl-5">false</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;translations&quot;</span><span class="hl-1">: </span><span class="hl-4">&quot;../../../../exercises/translations.json&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-10">&quot;language&quot;</span><span class="hl-1">: </span><span class="hl-4">&quot;nl&quot;</span><br/><span class="hl-1">}</span>
+</code></pre>
+</li>
+<li><p>Run the judge locally by opening <code>packages/runner/src/environment/page.html</code> in your browser.
+This will run your new testplan.</p>
+</li>
+<li><p>Adjust the testplan as needed, and refresh the browser window to test a newer version of the testplan.</p>
+</li>
+<li><p>Add the exercise (and all levels if needed) to the <code>exercises.test.js</code> file.</p>
+</li>
+<li><p>Commit and push the changes.</p>
+</li>
+</ol>
+
+<a href="#translations" id="translations" style="color: inherit; text-decoration: none;">
+  <h2>Translations</h2>
+</a>
+<p>In the FTRPRF Studio, all Scratch projects use <em>translation codes</em> to make the projects translatable.
+A translation code is a string starting and ending with a colon, e.g. <code>&quot;:hello:&quot;</code>.
+This translation code will then be replaced by the values in Dutch and English when publishing the exercise.</p>
+<p>The same codes are also used in the testplans.
+In production, the translation codes are replaced with a regex before the testplan is sent to the judge.
+However, locally, we don&#39;t have the backend, so we need to do this ourselves.</p>
+<p>In a testplan, translation codes should be surrounded by the globally available <code>t()</code> function.</p>
+<p>For example, imagine this piece of code:</p>
+<pre><code class="language-javascript"><span class="hl-3">console</span><span class="hl-1">.</span><span class="hl-2">log</span><span class="hl-1">(</span><span class="hl-2">t</span><span class="hl-1">(</span><span class="hl-4">&#39;:hallo:&#39;</span><span class="hl-1">));</span>
+</code></pre>
+<p>Locally, the following procedure is used:</p>
+<ol>
+<li>The <code>config.json</code> file has an entry specifying the translation data, which is downloaded when you download the <code>sb3</code> files.</li>
+<li>The key, <code>:hallo:</code> is looked up in the translation data.</li>
+<li>The found translation is returned, e.g. <code>&quot;Hallo&quot;</code> in Dutch and <code>&quot;Hello&quot;</code> in English.</li>
+</ol>
+<p>In the production environment, things are different:</p>
+<ol>
+<li>The translation codes are replaced by a regex with the translated value.
+This will result in two testplans: <code>t(&#39;Hallo&#39;)</code> and <code>t(&#39;Hello&#39;)</code>.</li>
+<li>In production, the judge has no translation data, so the argument to the <code>t()</code> function is just returned.</li>
+</ol>
+</div></div>
+<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+<div class="tsd-navigation settings">
+<details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility">
+<h4 class="uppercase">Member Visibility</h4><form>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div>
+<div class="tsd-theme-toggle">
+<h4 class="uppercase">Theme</h4><select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<nav class="tsd-navigation primary">
+<details class="tsd-index-accordion" open><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Modules</h3></summary>
+<div class="tsd-accordion-details">
+<ul>
+<li class="current"><a href="../modules.html">@ftrprf/judge-<wbr/>core</a>
+<ul>
+<li class="current pages-entry pages-entry-menu pages-entry-depth-1"><a>Guides</a>
+<ul>
+<li class="pages-entry pages-entry-page pages-entry-depth-2"><a href="index.html">Getting started</a></li>
+<li class="pages-entry pages-entry-page pages-entry-depth-2"><a href="other-projects.html">Using the judge in other projects</a></li>
+<li class="pages-entry pages-entry-page pages-entry-depth-2"><a href="introduction-to-testing.html">Introduction to testing</a></li>
+<li class="current selected pages-entry pages-entry-page pages-entry-depth-2"><a href="tools-for-authors.html">Tools for testplan authors</a></li>
+<li class="pages-entry pages-entry-page pages-entry-depth-2"><a href="feedback.html">Output format</a></li></ul></li>
+<li class="tsd-kind-module"><a href="../modules/blocks.html">blocks</a></li>
+<li class="tsd-kind-module"><a href="../modules/context.html">context</a></li>
+<li class="tsd-kind-module"><a href="../modules/deferred.html">deferred</a></li>
+<li class="tsd-kind-module"><a href="../modules/evaluation.html">evaluation</a></li>
+<li class="tsd-kind-module"><a href="../modules/global.html">global</a></li>
+<li class="tsd-kind-module"><a href="../modules/i18n.html">i18n</a></li>
+<li class="tsd-kind-module"><a href="../modules/index.html">index</a></li>
+<li class="tsd-kind-module"><a href="../modules/lines.html">lines</a></li>
+<li class="tsd-kind-module"><a href="../modules/listener.html">listener</a></li>
+<li class="tsd-kind-module"><a href="../modules/locales_en_json.html">locales/en.json</a></li>
+<li class="tsd-kind-module"><a href="../modules/locales_nl_json.html">locales/nl.json</a></li>
+<li class="tsd-kind-module"><a href="../modules/log.html">log</a></li>
+<li class="tsd-kind-module"><a href="../modules/matcher_differ.html">matcher/differ</a></li>
+<li class="tsd-kind-module"><a href="../modules/matcher_node_matcher.html">matcher/node-<wbr/>matcher</a></li>
+<li class="tsd-kind-module"><a href="../modules/matcher_patterns.html">matcher/patterns</a></li>
+<li class="tsd-kind-module"><a href="../modules/model.html">model</a></li>
+<li class="tsd-kind-module"><a href="../modules/output.html">output</a></li>
+<li class="tsd-kind-module"><a href="../modules/output-1.html">output</a></li>
+<li class="tsd-kind-module"><a href="../modules/output_collector.html">output/collector</a></li>
+<li class="tsd-kind-module"><a href="../modules/output_full_schema.html">output/full-<wbr/>schema</a></li>
+<li class="tsd-kind-module"><a href="../modules/output_partial_schema.html">output/partial-<wbr/>schema</a></li>
+<li class="tsd-kind-module"><a href="../modules/profiler.html">profiler</a></li>
+<li class="tsd-kind-module"><a href="../modules/renderer.html">renderer</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_action.html">scheduler/action</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_broadcast.html">scheduler/broadcast</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_callback.html">scheduler/callback</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_click.html">scheduler/click</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_end.html">scheduler/end</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_green_flag.html">scheduler/green-<wbr/>flag</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_io.html">scheduler/io</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_scheduled_event.html">scheduler/scheduled-<wbr/>event</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_track.html">scheduler/track</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_variable.html">scheduler/variable</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_wait.html">scheduler/wait</a></li>
+<li class="tsd-kind-module"><a href="../modules/testplan.html">testplan</a></li>
+<li class="tsd-kind-module"><a href="../modules/testplan-1.html">testplan</a></li>
+<li class="tsd-kind-module"><a href="../modules/testplan_hierarchy.html">testplan/hierarchy</a></li>
+<li class="tsd-kind-module"><a href="../modules/testplan_predefined_blocks.html">testplan/predefined-<wbr/>blocks</a></li>
+<li class="tsd-kind-module"><a href="../modules/types.html">types</a>
+<ul>
+<li class="tsd-kind-namespace tsd-parent-kind-module"><a href="../modules/types._scratch_audio_.html">&quot;scratch-<wbr/>audio&quot;</a></li>
+<li class="tsd-kind-namespace tsd-parent-kind-module"><a href="../modules/types._scratch_render_.html">&quot;scratch-<wbr/>render&quot;</a></li>
+<li class="tsd-kind-namespace tsd-parent-kind-module"><a href="../modules/types._scratch_storage_.html">&quot;scratch-<wbr/>storage&quot;</a></li>
+<li class="tsd-kind-namespace tsd-parent-kind-module"><a href="../modules/types._scratch_svg_renderer_.html">&quot;scratch-<wbr/>svg-<wbr/>renderer&quot;</a></li>
+<li class="tsd-kind-namespace tsd-parent-kind-module"><a href="../modules/types._scratch_vm_.html">&quot;scratch-<wbr/>vm&quot;</a></li></ul></li>
+<li class="tsd-kind-module"><a href="../modules/utils.html">utils</a></li>
+<li class="tsd-kind-module"><a href="../modules/vm.html">vm</a></li></ul></li></ul></div></details></nav>
+<nav class="tsd-navigation secondary menu-sticky"></nav></div></div>
+<div class="container tsd-generator">
+<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
+<div class="overlay"></div><script src="../assets/main.js"></script></body></html>
