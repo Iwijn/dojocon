@@ -1,0 +1,218 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>Introduction to testing | @ftrprf/judge-core</title><meta name="description" content="Documentation for @ftrprf/judge-core"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script async src="../assets/search.js" id="search-script"></script><link rel="stylesheet" href="../assets/pages.css"/></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container">
+<div class="table-cell" id="tsd-search" data-base="..">
+<div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
+<div class="field">
+<div id="tsd-toolbar-links"></div></div>
+<ul class="results">
+<li class="state loading">Preparing search index...</li>
+<li class="state failure">The search index is not available</li></ul><a href="../index.html" class="title">@ftrprf/judge-core</a></div>
+<div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="7" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="11" width="14" height="2" fill="var(--color-text)"></rect></svg></a></div></div></header>
+<div class="container container-main">
+<div class="col-8 col-content">
+<div class="tsd-page-title">
+<ul class="tsd-breadcrumb">
+<li><a href="../modules.html">@ftrprf/judge-core</a></li>
+<li><span>Guides</span></li>
+<li><a href="introduction-to-testing.html">Introduction to testing</a></li></ul>
+<h1> Introduction to testing</h1></div>
+<div class="tsd-panel tsd-typography"><p>This document is a short introduction to the concept of testing Scratch exercises with the Scratch judge.
+It doesn&#39;t focus on the full technical details, which are linked where appropriate.</p>
+<p>The document <a href="./tools-for-authors.html"><em>Tools for testplan authors</em></a> might also be useful.
+It contains a more practical guide to get started when writing testplans.
+It also details how the translations work.</p>
+
+<a href="#types-of-tests" id="types-of-tests" style="color: inherit; text-decoration: none;">
+  <h2>Types of tests</h2>
+</a>
+<p>How a Scratch exercise is tested also depends on what you want to achieve with the exercise.
+In general, there are two types of tests:</p>
+<ul>
+<li>Static tests, where the Scratch project is not executed.
+This means the test only looks at the blocks, but doesn&#39;t execute the project.</li>
+<li>Dynamic tests, where the Scratch project is executed.
+Here, the full Scratch project is run with simulated user input (e.g. pressing the green flag or clicking a sprite).</li>
+</ul>
+<p>Static tests are generally easier to write and faster to execute, but are severely limited in what they can test.
+Assessing whether a project uses a certain block (e.g. a loop block) somewhere in the project is typically done with static tests.
+Assessing whether a preprogrammed sprite (e.g. blocks that are provided in the starter project) was not modified is also done with static tests.</p>
+<p>Checking more high-level goals, such as &quot;Does the sprite move when clicked?&quot;, are more difficult with static tests.
+You often don&#39;t want to limit an accepted solution to just the way you would solve it.
+There are multiple ways a sprite can move, and probably want to accept them all.
+In this case, dynamic tests are needed.
+You need to execute the project, simulate someone clicking the sprite under test and finally checking if the sprite did move.</p>
+
+<a href="#output-of-a-quottestquot" id="output-of-a-quottestquot" style="color: inherit; text-decoration: none;">
+  <h2>Output of a &quot;test&quot;</h2>
+</a>
+<p>After a test of an exercise, you need some kind of feedback, to indicate which tests passed and which didn&#39;t.
+The result of a test is a hierarchical structure of groups and tests.
+A test is, as the name implies, a check on some property of the exercise.
+It can be correct or wrong, and contains feedback for both cases.
+Additionally, a test also has a name and can include additional information, such as diffs, messages, etc.
+However, most of the additional information is not used at the moment.</p>
+<p>Structure is added by grouping the tests into, again the aptly named, groups.
+Groups can be nested, so groups inside groups inside groups ... is possible.
+While there is no hard limit, we generally try to keep the number of levels small (think 3 or less).</p>
+<p>Groups are used for more than just structure though.
+They also support a notion of visibility, with three modes:</p>
+<ul>
+<li>Visible: the group is expanded, all children are visible.</li>
+<li>Hidden: the group is completely hidden, unless one of the tests fails.</li>
+<li>Summary: the group is collapsed by default and a summary message is shown, unless one of the tests fails.</li>
+</ul>
+<p>The Scratch judge offers a set of functions that will take care of outputting the result in the correct format.
+An example of a test inside a group is:</p>
+<pre><code class="language-javascript"><span class="hl-3">e</span><span class="hl-1">.</span><span class="hl-3">group</span><span class="hl-1">.</span><span class="hl-2">group</span><span class="hl-1">(</span><span class="hl-4">&#39;Tests for sprite A&#39;</span><span class="hl-1">, () </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-3">e</span><span class="hl-1">.</span><span class="hl-3">group</span><br/><span class="hl-1">    .</span><span class="hl-2">test</span><span class="hl-1">(</span><span class="hl-4">&#39;Sprite A does stuff right&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">    .</span><span class="hl-2">feedback</span><span class="hl-1">({</span><br/><span class="hl-1">      </span><span class="hl-3">correct:</span><span class="hl-1"> </span><span class="hl-4">&#39;Good job, sprite A does get stuff right!&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-3">wrong:</span><span class="hl-1"> </span><span class="hl-4">&#39;Oh no, sprite A does not get it right, take another look.&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">    })</span><br/><span class="hl-1">    .</span><span class="hl-2">expect</span><span class="hl-1">(</span><span class="hl-4">&#39;some value&#39;</span><span class="hl-1">)</span><br/><span class="hl-1">    .</span><span class="hl-2">toBe</span><span class="hl-1">(</span><span class="hl-4">&#39;another value&#39;</span><span class="hl-1">);</span><br/><span class="hl-1">});</span>
+</code></pre>
+<p>The double <code>group.group</code> is not a typo, but needed for backwards compatibility with older testplans.
+At some point, it will be removed.</p>
+<p>The example above is a group with a single test.
+The test, as written in the example, will always fail, since it expects the string <code>&quot;some value&quot;</code> to be equal to <code>&quot;another value&quot;</code>.
+Users of Jest will recognize the <code>expect</code>/<code>toBe</code> notation.</p>
+<p>A more conceptual overview of the output format is given in the <a href="./feedback.html"><em>Output format</em></a> document.
+The documentation for use in the testplans resides in the <a href="../modules/testplan_hierarchy.html">JavaScript docs for the <code>hierarchy</code> module</a>.</p>
+
+<a href="#testing-with-the-scratch-judge" id="testing-with-the-scratch-judge" style="color: inherit; text-decoration: none;">
+  <h2>Testing with the Scratch judge</h2>
+</a>
+<p>The link between a Scratch exercise and the test feedback is the testplan.
+This is the test suite and contains the actual tests, which will be executed by the judge.
+It thus also contains all the feedback that should be given.</p>
+<p>When testing exercises, three phases are executed:</p>
+<ol>
+<li>Before execution.
+This phase happens before the Scratch project is executed.</li>
+<li>During execution.
+In this phase, you actually run the Scratch project.
+This means simulating user interactions.</li>
+<li>After execution (or <em>post-mortem tests</em>).
+Here, the execution has finished and various data were recorded in the log.</li>
+</ol>
+<p>These phases are represented in the testplan by functions:</p>
+<pre><code class="language-javascript"><span class="hl-7">/** </span><span class="hl-5">@param</span><span class="hl-7"> </span><span class="hl-9">{Evaluation}</span><span class="hl-7"> </span><span class="hl-3">e</span><span class="hl-7"> */</span><br/><span class="hl-5">function</span><span class="hl-1"> </span><span class="hl-2">beforeExecution</span><span class="hl-1">(</span><span class="hl-3">e</span><span class="hl-1">) {}</span><br/><br/><span class="hl-7">/** </span><span class="hl-5">@param</span><span class="hl-7"> </span><span class="hl-9">{Evaluation}</span><span class="hl-7"> </span><span class="hl-3">e</span><span class="hl-7"> */</span><br/><span class="hl-5">function</span><span class="hl-1"> </span><span class="hl-2">duringExecution</span><span class="hl-1">(</span><span class="hl-3">e</span><span class="hl-1">) {}</span><br/><br/><span class="hl-7">/** </span><span class="hl-5">@param</span><span class="hl-7"> </span><span class="hl-9">{Evaluation}</span><span class="hl-7"> </span><span class="hl-3">e</span><span class="hl-7"> */</span><br/><span class="hl-5">function</span><span class="hl-1"> </span><span class="hl-2">afterExecution</span><span class="hl-1">(</span><span class="hl-3">e</span><span class="hl-1">) {}</span>
+</code></pre>
+<p>The argument to these functions is the <code>Evaluation</code> object.
+This provides access to all the tools needed in the tests,
+from the scheduler to simulate user interaction, to the functions used to group and write tests.
+This is explained in detail in the <a href="../classes/evaluation.Evaluation.html"><code>Evaluation</code> JavaScript docs</a>.</p>
+
+<a href="#before-execution" id="before-execution" style="color: inherit; text-decoration: none;">
+  <h3>Before execution</h3>
+</a>
+<p>The <em>before execution</em> phase allows for execution static tests.
+In general, if possible to test statically, you should use static tests, as they are very fast.</p>
+<p>The Scratch judge has tools specifically to facilitate testing that the students did not modify the existing code (or, for example, that they didn&#39;t remove some sprites).
+This is implemented a function called <code>checkPredefinedBlocks</code>.
+More details can be found in the <a href="../functions/testplan_predefined_blocks.checkPredefinedBlocks.html">JavaScript docs for the <code>checkPredefinedBlocks</code></a> function.</p>
+<p>Abstractions also exist to statically test for a set blocks.
+For example, you might want to verify that a certain sprite has a specific script of blocks.
+This is achieved by having a set of functions that represent blocks, and accompanying functions that allow comparing those block representations against the Scratch project.</p>
+<p>For example, consider the following script:</p>
+<p><img src="../media/stack.png" alt="image"></p>
+<p>This can be represented in a testplan as follows:</p>
+<pre><code class="language-javascript"><span class="hl-2">script</span><span class="hl-1">(</span><br/><span class="hl-1">  </span><span class="hl-2">whenIReceive</span><span class="hl-1">(</span><span class="hl-4">&#39;Start&#39;</span><span class="hl-1">),</span><br/><span class="hl-1">  </span><span class="hl-2">setEffectTo</span><span class="hl-1">(</span><span class="hl-2">transparent</span><span class="hl-1">(), </span><span class="hl-6">0</span><span class="hl-1">),</span><br/><span class="hl-1">  </span><span class="hl-2">repeat</span><span class="hl-1">(</span><span class="hl-6">15</span><span class="hl-1">, </span><span class="hl-2">script</span><span class="hl-1">(</span><span class="hl-2">changeSizeBy</span><span class="hl-1">(</span><span class="hl-6">3</span><span class="hl-1">), </span><span class="hl-2">changeYBy</span><span class="hl-1">(-</span><span class="hl-6">2</span><span class="hl-1">))),</span><br/><span class="hl-1">  </span><span class="hl-2">repeat</span><span class="hl-1">(</span><span class="hl-6">20</span><span class="hl-1">, </span><span class="hl-2">script</span><span class="hl-1">(</span><span class="hl-2">changeEffectBy</span><span class="hl-1">(</span><span class="hl-2">transparent</span><span class="hl-1">(), </span><span class="hl-6">5</span><span class="hl-1">), </span><span class="hl-2">changeSizeBy</span><span class="hl-1">(</span><span class="hl-6">3</span><span class="hl-1">))),</span><br/><span class="hl-1">  </span><span class="hl-2">hide</span><span class="hl-1">(),</span><br/><span class="hl-1">);</span>
+</code></pre>
+<p>The relevant documentation for these features is:</p>
+<ul>
+<li>The <a href="../modules/matcher_differ.html"><code>differ</code> module</a>, which contains the code to compare a set of blocks against a Scratch project.</li>
+<li>A list of all available blocks in the <a href="../modules/matcher_patterns.html"><code>patterns</code> module</a> docs.</li>
+</ul>
+
+<a href="#during-execution" id="during-execution" style="color: inherit; text-decoration: none;">
+  <h2>During execution</h2>
+</a>
+<p>In this phase, the main objective is to simulate user interaction and command the Scratch VM to do stuff.
+This is achieved by using the <a href="../classes/scheduler_scheduled_event.ScheduledEvent.html"><code>Scheduler</code> instance</a>, which allows you to &quot;schedule&quot; (i.e. plan) which events will be executed on the Scratch project.</p>
+<p>For example, a small example where the green flag is pressed, a wait of 800 ms and then pressing the <code>s</code> key:</p>
+<pre><code class="language-javascript"><span class="hl-7">/** </span><span class="hl-5">@param</span><span class="hl-7"> </span><span class="hl-9">{Evaluation}</span><span class="hl-7"> </span><span class="hl-3">e</span><span class="hl-7"> */</span><br/><span class="hl-5">function</span><span class="hl-1"> </span><span class="hl-2">duringExecution</span><span class="hl-1">(</span><span class="hl-3">e</span><span class="hl-1">) {</span><br/><span class="hl-1">  </span><span class="hl-3">e</span><span class="hl-1">.</span><span class="hl-3">scheduler</span><span class="hl-1">.</span><span class="hl-2">greenFlag</span><span class="hl-1">(</span><span class="hl-5">true</span><span class="hl-1">).</span><span class="hl-2">wait</span><span class="hl-1">(</span><span class="hl-6">800</span><span class="hl-1">).</span><span class="hl-2">pressKey</span><span class="hl-1">(</span><span class="hl-4">&#39;s&#39;</span><span class="hl-1">);</span><br/><span class="hl-1">}</span>
+</code></pre>
+<p>Tests themselves are seldom written in the <em>during execution</em> phase, as all information is stored in the log.
+This log can then be queried in the <em>after execution</em> phase.</p>
+
+<a href="#after-execution" id="after-execution" style="color: inherit; text-decoration: none;">
+  <h2>After execution</h2>
+</a>
+<p>Each scheduled event and a set of actions in the Scratch VM are logged in the log.
+In this phase, most tests will examine the log and derive a conclusion from the information found in the log.</p>
+<p>A good starting point for information on the log is the <a href="../classes/log.Log.html">JavaScript docs for the <code>Log</code> class</a>.
+Of course, you should click through to find information on other available types.</p>
+</div></div>
+<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+<div class="tsd-navigation settings">
+<details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility">
+<h4 class="uppercase">Member Visibility</h4><form>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div>
+<div class="tsd-theme-toggle">
+<h4 class="uppercase">Theme</h4><select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<nav class="tsd-navigation primary">
+<details class="tsd-index-accordion" open><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Modules</h3></summary>
+<div class="tsd-accordion-details">
+<ul>
+<li class="current"><a href="../modules.html">@ftrprf/judge-<wbr/>core</a>
+<ul>
+<li class="current pages-entry pages-entry-menu pages-entry-depth-1"><a>Guides</a>
+<ul>
+<li class="pages-entry pages-entry-page pages-entry-depth-2"><a href="index.html">Getting started</a></li>
+<li class="pages-entry pages-entry-page pages-entry-depth-2"><a href="other-projects.html">Using the judge in other projects</a></li>
+<li class="current selected pages-entry pages-entry-page pages-entry-depth-2"><a href="introduction-to-testing.html">Introduction to testing</a></li>
+<li class="pages-entry pages-entry-page pages-entry-depth-2"><a href="tools-for-authors.html">Tools for testplan authors</a></li>
+<li class="pages-entry pages-entry-page pages-entry-depth-2"><a href="feedback.html">Output format</a></li></ul></li>
+<li class="tsd-kind-module"><a href="../modules/blocks.html">blocks</a></li>
+<li class="tsd-kind-module"><a href="../modules/context.html">context</a></li>
+<li class="tsd-kind-module"><a href="../modules/deferred.html">deferred</a></li>
+<li class="tsd-kind-module"><a href="../modules/evaluation.html">evaluation</a></li>
+<li class="tsd-kind-module"><a href="../modules/global.html">global</a></li>
+<li class="tsd-kind-module"><a href="../modules/i18n.html">i18n</a></li>
+<li class="tsd-kind-module"><a href="../modules/index.html">index</a></li>
+<li class="tsd-kind-module"><a href="../modules/lines.html">lines</a></li>
+<li class="tsd-kind-module"><a href="../modules/listener.html">listener</a></li>
+<li class="tsd-kind-module"><a href="../modules/locales_en_json.html">locales/en.json</a></li>
+<li class="tsd-kind-module"><a href="../modules/locales_nl_json.html">locales/nl.json</a></li>
+<li class="tsd-kind-module"><a href="../modules/log.html">log</a></li>
+<li class="tsd-kind-module"><a href="../modules/matcher_differ.html">matcher/differ</a></li>
+<li class="tsd-kind-module"><a href="../modules/matcher_node_matcher.html">matcher/node-<wbr/>matcher</a></li>
+<li class="tsd-kind-module"><a href="../modules/matcher_patterns.html">matcher/patterns</a></li>
+<li class="tsd-kind-module"><a href="../modules/model.html">model</a></li>
+<li class="tsd-kind-module"><a href="../modules/output.html">output</a></li>
+<li class="tsd-kind-module"><a href="../modules/output-1.html">output</a></li>
+<li class="tsd-kind-module"><a href="../modules/output_collector.html">output/collector</a></li>
+<li class="tsd-kind-module"><a href="../modules/output_full_schema.html">output/full-<wbr/>schema</a></li>
+<li class="tsd-kind-module"><a href="../modules/output_partial_schema.html">output/partial-<wbr/>schema</a></li>
+<li class="tsd-kind-module"><a href="../modules/profiler.html">profiler</a></li>
+<li class="tsd-kind-module"><a href="../modules/renderer.html">renderer</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_action.html">scheduler/action</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_broadcast.html">scheduler/broadcast</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_callback.html">scheduler/callback</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_click.html">scheduler/click</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_end.html">scheduler/end</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_green_flag.html">scheduler/green-<wbr/>flag</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_io.html">scheduler/io</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_scheduled_event.html">scheduler/scheduled-<wbr/>event</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_track.html">scheduler/track</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_variable.html">scheduler/variable</a></li>
+<li class="tsd-kind-module"><a href="../modules/scheduler_wait.html">scheduler/wait</a></li>
+<li class="tsd-kind-module"><a href="../modules/testplan.html">testplan</a></li>
+<li class="tsd-kind-module"><a href="../modules/testplan-1.html">testplan</a></li>
+<li class="tsd-kind-module"><a href="../modules/testplan_hierarchy.html">testplan/hierarchy</a></li>
+<li class="tsd-kind-module"><a href="../modules/testplan_predefined_blocks.html">testplan/predefined-<wbr/>blocks</a></li>
+<li class="tsd-kind-module"><a href="../modules/types.html">types</a>
+<ul>
+<li class="tsd-kind-namespace tsd-parent-kind-module"><a href="../modules/types._scratch_audio_.html">&quot;scratch-<wbr/>audio&quot;</a></li>
+<li class="tsd-kind-namespace tsd-parent-kind-module"><a href="../modules/types._scratch_render_.html">&quot;scratch-<wbr/>render&quot;</a></li>
+<li class="tsd-kind-namespace tsd-parent-kind-module"><a href="../modules/types._scratch_storage_.html">&quot;scratch-<wbr/>storage&quot;</a></li>
+<li class="tsd-kind-namespace tsd-parent-kind-module"><a href="../modules/types._scratch_svg_renderer_.html">&quot;scratch-<wbr/>svg-<wbr/>renderer&quot;</a></li>
+<li class="tsd-kind-namespace tsd-parent-kind-module"><a href="../modules/types._scratch_vm_.html">&quot;scratch-<wbr/>vm&quot;</a></li></ul></li>
+<li class="tsd-kind-module"><a href="../modules/utils.html">utils</a></li>
+<li class="tsd-kind-module"><a href="../modules/vm.html">vm</a></li></ul></li></ul></div></details></nav>
+<nav class="tsd-navigation secondary menu-sticky"></nav></div></div>
+<div class="container tsd-generator">
+<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
+<div class="overlay"></div><script src="../assets/main.js"></script></body></html>
